@@ -1,113 +1,164 @@
-import Image from "next/image";
-
+"use client";
+import { useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+type Inputs = {
+  question: string;
+  exampleRequired?: string;
+};
 export default function Home() {
+  const [message, setMessage] = useState("");
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log("입력된 값 : " + JSON.stringify(data));
+    fetch("http://localhost:8000/api/chat/titanic", {
+      //선택지 3개로 나누기
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => setMessage(data.titanic))
+      .then((data) => console.log(message))
+      .catch((error) => console.log("error:", error));
+  };
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    // <div className="flex h-screen justify-center items-center">
+    //   <div className="w-full max-w-md">
+    //     <h2 className="text-3xl font-bold mb-6">Bit Chat GPT</h2>
+    //     <div className="bg-gray-100 rounded-lg p-6 mb-6">
+    //       <div className="h-64 overflow-y-auto">
+    //         {<h4>{message ? message : ""}</h4>}
+    //       </div>
+    //     </div>
+    //     <form onSubmit={handleSubmit(onSubmit)}>
+    //       <input
+    //         type="text"
+    //         {...register("question", { required: true })}
+    //         className="w-full mb-4 p-3 border border-gray-300 rounded"
+    //       />
+    //       <button
+    //         type="submit"
+    //         className="w-full py-3 bg-blue-500 text-white font-bold rounded"
+    //       >
+    //         전송
+    //       </button>
+    //     </form>
+    //     {errors.question && <span>This field is required</span>}
+    //   </div>
+    // </div>
+    <div>
+      {/*<!-- Article 섹션 -->*/}
+      <div className="Article w-screen h-screen relative bg-white">
+        {/*<!-- Article 내용 -->*/}
+      </div>
+      {/*<!-- Cards 섹션 -->*/}
+      <div className="Cards left-[90px] top-[654px] absolute justify-start items-start gap-8 inline-flex">
+        {/*<!-- Card 1 -->*/}
+        <div className="Card w-[404px] h-[434px] flex-col justify-start items-start gap-6 inline-flex">
+          <img
+            className="Image w-[404px] h-[346px] relative rounded-lg"
+            src="https://cdn.theatlantic.com/thumbor/1zSmvW3Hckje87TNIYFSNdMKloI=/1x81:4095x2384/960x540/media/img/mt/2023/02/MCDTITA_FE014/original.jpg"
+          />
+          <div className="Copy self-stretch h-16 flex-col justify-center items-start gap-1 flex">
+            <div className="Title self-stretch text-black text-xl font-medium font-['Inter'] leading-[30px]">
+              Title
+            </div>
+            <div className="Author self-stretch text-zinc-500 text-xl font-medium font-['Inter'] leading-[30px]">
+              Author
+            </div>
+          </div>
+        </div>
+        {/*<!-- Card 2 -->*/}
+        <div className="Card w-[404px] h-[434px] flex-col justify-start items-start gap-6 inline-flex">
+          <img
+            className="Image w-[404px] h-[346px] relative rounded-lg"
+            src="https://via.placeholder.com/404x346"
+          />
+          <div className="Copy self-stretch h-16 flex-col justify-center items-start gap-1 flex">
+            <div className="Title self-stretch text-black text-xl font-medium font-['Inter'] leading-[30px]">
+              Title
+            </div>
+            <div className="Author self-stretch text-zinc-500 text-xl font-medium font-['Inter'] leading-[30px]">
+              Author
+            </div>
+          </div>
+        </div>
+        {/*<!-- Card 3 -->*/}
+        <div className="Card w-[404px] h-[434px] flex-col justify-start items-start gap-6 inline-flex">
+          <img
+            className="Image w-[404px] h-[346px] relative rounded-lg"
+            src="https://via.placeholder.com/404x346"
+          />
+          <div className="Copy self-stretch h-16 flex-col justify-center items-start gap-1 flex">
+            <div className="Title self-stretch text-black text-xl font-medium font-['Inter'] leading-[30px]">
+              Title
+            </div>
+            <div className="Author self-stretch text-zinc-500 text-xl font-medium font-['Inter'] leading-[30px]">
+              Author
+            </div>
+          </div>
         </div>
       </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+      {/*<!-- ArticleTitle 섹션 -->*/}
+      <div className="ArticleTitle w-[1181px] h-[139px] left-[80px] top-[244px] absolute flex-col justify-center items-start gap-6 inline-flex">
+        <div className="Titanic self-stretch text-black text-[64px] font-bold font-['Inter']">
+          LLM에게 물어보세요!
+        </div>
       </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+      {/*<!-- Navigation 섹션 -->*/}
+      <div className="Navigation h-[164px] px-20 py-14 left-0 top-0 absolute bg-white justify-center items-center gap-[795px] inline-flex">
+        <div className="SiteName text-black text-xl font-medium font-['Inter'] leading-[30px]">
+          Site name
+        </div>
+        <div className="Items self-stretch justify-end items-center gap-12 inline-flex">
+          <div className="Page text-black text-xl font-medium font-['Inter'] leading-[30px]">
+            Page
+          </div>
+          <div className="Page text-black text-xl font-medium font-['Inter'] leading-[30px]">
+            Page
+          </div>
+          <div className="Page text-black text-xl font-medium font-['Inter'] leading-[30px]">
+            Page
+          </div>
+          <div className="Button px-6 py-3.5 bg-black rounded-lg shadow justify-center items-center gap-2 flex">
+            <div className="Button text-white text-base font-medium font-['Inter'] leading-normal">
+              Button
+            </div>
+          </div>
+        </div>
       </div>
-    </main>
+      {/*<!-- InputField 섹션 -->*/}
+      <div>{message && <h4>{message}</h4>}</div>
+      <div className="InputField w-[1312px] h-[101px] px-4 py-3 left-[80px] top-[383px] absolute bg-white rounded-lg shadow border-4 border-blue-500 justify-start items-start gap-2 inline-flex">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="w-full h-full flex items-center"
+        >
+          <input
+            type="text"
+            placeholder="내용을 입력하세요"
+            {...register("question", { required: true })}
+            className="w-full h-full outline-none bg-transparent"
+          />
+          <button
+            type="submit"
+            className="ml-2 px-4 py-2 bg-gray-800 text-white rounded-lg shadow"
+          >
+            버튼
+          </button>
+        </form>
+      </div>
+      {/*<!-- ComicboldButtonLargeIdleTrue 섹션 -->*/}
+      <div className="ComicboldButtonLargeIdleTrue left-[292px] top-[591px] absolute flex-col justify-start items-start inline-flex" />
+      <div className="ComicboldButtonLargeIdleTrue left-[1173px] top-[605px] absolute flex-col justify-start items-start inline-flex" />
+      <div className="ComicboldButtonLargeIdleTrue left-[747px] top-[605px] absolute flex-col justify-start items-start inline-flex" />
+    </div>
   );
 }
